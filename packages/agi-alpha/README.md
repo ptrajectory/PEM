@@ -1,6 +1,3 @@
-### General Overview
-![General Overvire](./public/general_overview.png)
-
 # THE EPM AGI PATTERN
 
 - EPM is an acronymn for Execution Prompt Machine and includes the following building blocks

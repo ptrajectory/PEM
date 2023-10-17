@@ -22,7 +22,7 @@ export default class Decider {
         const responseFromGPT = makeACallToOpenAIDECIDER(`
 
             I'M AN AI BOT SO, AND I HAVE SOME EXECUTION MANAGERS FOR SPECIFIC TASKS WHICH ILL LIST BELOW, FOR YOUR RESPONSES:
-            MARK THE BEGGINING WITH THIS: ::::::::::::::MESSAGE_FOR_BOT_START::::::::::::::::
+            MARK THE BEGINING WITH THIS: ::::::::::::::MESSAGE_FOR_BOT_START::::::::::::::::
             MARK THE END WITH THIS:       ::::::::::::::MESSAGE_FOR_BOT_END::::::::::::::::::
             SELECT ONE EXECUTION MANAGER THAT CAN SATISFY THE SPECIFIED TASK: AND RETURN A RESPONSE LIKE THIS: {{EXECUTION_MANAGER_NAME}}
 

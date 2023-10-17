@@ -22,7 +22,7 @@ export default class Principal {
             MARK THE END WITH THIS:       ::::::::::::::MESSAGE_FOR_BOT_END::::::::::::::::::
             EACH NEW TASK SHOULD BE IN A NEW LINE AND LIKE THIS: {{THE_TASK}}
             
-            HERE IS THE REQUEST::
+            HERE IS THE REQUEST FROM MY HUMAN::
 
             Hi there, I would like to create a new task for tomorrow afternoon, I'll be having a meeting with my design team
         `)

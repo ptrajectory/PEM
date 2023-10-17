@@ -13,14 +13,11 @@ export const parseOpenAIResponse = (response: string) => {
     task_list = task_list?.filter((t,i) => t.replaceAll(" ", "").length > 0 ).map((task)=> task.replace("{{", "").replace("}}", "").trim())
 
     return task_list
-
 }
 export const parseOpenAIResponseDecider = (response: string) => {
 
     let execution_manager = response.split(MESSAGE_FOR_BOT_START).at(1)
     execution_manager = execution_manager?.split(MESSAGE_FOR_BOT_END).at(0)
-
-    
 
     const manager=  execution_manager?.trim().replaceAll("{{", "").replaceAll("}}","")
     return manager

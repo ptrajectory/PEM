@@ -37,12 +37,10 @@ export const makeFirstConnectorRequest = (message: string) => {
 
 
 export const loadExecutors = () => {
-
-
     return {
         "task_creator": "Creates a single task in the user's task list with no extra information",
         "task_creator_with_date": "Creates a single tasks and adds the date for the task",
-        "meeting_creator": "Schedules a meeting on the user's connected meeting callendar, if none is specified creates a simple task with a date for execution" 
+        "meeting_creator": "Schedules a meeting on the user's connected meeting calendar, if none is specified creates a simple task with a date for execution"
     } as const // for now
 
 }
