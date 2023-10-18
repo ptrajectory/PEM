@@ -10,7 +10,7 @@ export class TaskCreateExecutionManager extends ExecutionManager {
     constructor() {
         super(
             "TaskCreateExecutionManager",
-            "Creates a new task for the user",
+            "Can Create a new task for the user",
             TaskParserConnector,
             TaskCreator
         );
@@ -25,10 +25,12 @@ export class TaskCreateExecutionManager extends ExecutionManager {
         catch (e)
         {
             if(e instanceof ConnectorParsingError){
+                console.log(e.message)
                 // TODO: tell llm to generate a more human friendly message
             }
 
             if(e instanceof ConnectorServiceError){
+                console.log(e.message)
                 // TODO: tell llm to generate a more human friendly message
             }
 

@@ -1,18 +1,36 @@
 import * as z from "zod";
 import {ConnectorParsingError, ConnectorServiceError, IConnectorFn} from "../lib/connector";
-import {ask_llm_to_parse_task, cleanup_llm_response} from "../utils";
+import {ask_llm_to_parse_task, cleanup_llm_response, convert_llm_task_response_to_json} from "../utils";
+import fs from "node:fs"
+import * as crypto from "crypto";
 
 const taskZodSchema = z.object({
-    name: z.string().optional(),
-    description: z.string().optional(),
-    date: z.string().optional(),
+    name: z.string().optional().nullable(),
+    description: z.string().optional().nullable(),
+    date: z.string().optional().nullable(),
+    reminder: z.boolean().optional().nullable()
 })
 
 export const TaskParserConnector: IConnectorFn<z.infer<typeof taskZodSchema>> = async (task: string)=>{
     let formatted_response;
 
     try {
-        formatted_response = await ask_llm_to_parse_task(task, "")
+        formatted_response = await ask_llm_to_parse_task(task, `
+            const taskZodSchema = z.object({
+                name: z.string().optional().nullable(),
+                description: z.string().optional().nullable(),
+                date: z.string().optional().nullable(),
+                reminder: z.boolean().optional().nullable()
+            })
+        `)
+
+        console.log(`
+            TaskParserConnector
+            
+            OPENAI SAYS:
+            
+            ${formatted_response}
+        `)
     }
     catch (e)
     {
@@ -20,12 +38,11 @@ export const TaskParserConnector: IConnectorFn<z.infer<typeof taskZodSchema>> = 
             LLM dependency failed
         `)
     }
-    const cleaned_up_response = cleanup_llm_response(formatted_response);
 
     let json;
 
     try {
-        json = JSON.parse(cleaned_up_response)
+        json = convert_llm_task_response_to_json(formatted_response);
     }
     catch (e)
     {
@@ -61,22 +78,22 @@ export const TaskParserConnector: IConnectorFn<z.infer<typeof taskZodSchema>> = 
              
              USING ZOD SCHEMA:
              const taskZodSchema = z.object({
-                name: z.string().optional(),
-                description: z.string().optional(),
-                date: z.string().optional(),
+                name: z.string().optional().nullable(),
+                description: z.string().optional().nullable(),
+                date: z.string().optional().nullable(),
             })
         `)
     }
 
 
-    return Promise.resolve(parsed.data)
+    return parsed.data
 }
 
 
 
 export const TaskCreator: IConnectorFn = async (task: z.infer<typeof taskZodSchema>) => {
-    // TODO: connect to db
-    // TODO: creat new task
+    let unique_id = crypto.randomBytes(16).toString("hex")
+    fs.writeFileSync(`./tasks/task-${Date.now()}-${unique_id}.json`, JSON.stringify(task), { encoding: 'utf-8' })
 
-    return Promise.resolve("Successfully created new task")
+    return Promise.resolve("The task has been successfully created.")
 }

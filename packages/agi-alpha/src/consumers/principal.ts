@@ -1,5 +1,5 @@
 import {IPrincipal} from "../lib/principal";
-import {breakDownRequestToTasks, decide_on_task_to_run, validate_request} from "../utils";
+import {breakDownRequestToTasks, validate_request} from "../utils";
 import {Decider} from "../lib/decider";
 import {TaskDecider} from "./decider";
 

@@ -1,6 +1,6 @@
 import {Decider, NoManagerDeciderError} from "../lib/decider";
 import {ExecutionManager, IExecutionManager, IExecutionManagerFn} from "../lib/execution_manager";
-import {decide_on_task_to_run, parse_chosen_task} from "../utils";
+import {decide_on_manager, parse_chosen_execution_manager} from "../utils";
 import {TaskCreateExecutionManager} from "./managers";
 
 
@@ -17,24 +17,27 @@ export class TaskDecider implements Decider {
 
     async decide(task: string) {
         this.task = task
-        // TODO: add description
+
         let execution_managers_descriptions = this.execution_managers.reduce((current_description, manager)=>{
             let new_description = `
                 ======================
                 = Name: ${manager.manager_name}
                 = Description: ${manager.manager_description}
                 ======================
-                
-                
-                Which of the above tasks solve this:
-                ${task}
             `
             return current_description + new_description
         }, "")
 
-        // TODO: ask llm to decide
-        const response = await decide_on_task_to_run(execution_managers_descriptions)
-        this.decision = await parse_chosen_task(response)
+        const response = await decide_on_manager(task,execution_managers_descriptions)
+
+        console.log(`
+            TaskDecider
+            
+            OPENAI SAYS:
+            ${response}
+        `)
+
+        this.decision = parse_chosen_execution_manager(response).trim()
     }
 
     async run(): Promise<string> {
@@ -42,7 +45,8 @@ export class TaskDecider implements Decider {
         const manager = this.execution_managers.find(({manager_name})=> manager_name == this.decision )
 
         if(!manager){
-            throw new NoManagerDeciderError("")
+            console.log("Decision", this.decision)
+            throw new NoManagerDeciderError("NO MANAGER CAN COMPLETE THIS TASK")
         }
 
         const execution_response = await manager.execute(this.task)
