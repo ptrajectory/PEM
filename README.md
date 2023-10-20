@@ -1,7 +1,7 @@
 ### General Overview
 ![General Overvire](./public/general_overview.png)
 
-# THE PEM AGI PATTERN
+# THE PEM AI PATTERN
 
 - PEM is an acronymn for Prompt Execution Machine and includes the following building blocks
   - Principal
